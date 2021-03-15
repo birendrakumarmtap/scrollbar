@@ -10,8 +10,6 @@ const Renderlist = (props) => {
 
 
     const getNextSetOfData = () => {
-        setOffset(offset + 10);
-
         fetch(`http://localhost:3005/getfake?limit=${limit}&offset=${offset}`)
             .then((res) => {
                 if (res.status === 200) {
@@ -21,7 +19,7 @@ const Renderlist = (props) => {
                         const arrf = result.map((item) => {
                             return item.title;
                         })
-                       
+                        setOffset(offset + 10);
                         setList([...list, ...arrf]);
                     })
 
@@ -32,17 +30,9 @@ const Renderlist = (props) => {
                     })
                 }
             })
-
-
     }
 
-
-
-
-
-
     window.onscroll = function () {
-        // console.log( window.innerHeight , window.scrollY, document.body.offsetHeight)
         if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
 
             getNextSetOfData();
@@ -51,28 +41,7 @@ const Renderlist = (props) => {
 
 
     useEffect(() => {
-        
-        console.log('hello');
-        fetch(`http://localhost:3005/getfake?limit=${limit}&offset=${offset}`)
-            .then((res) => {
-                if (res.status === 200) {
-                    setStatus('success')
-                    console.log('hello');
-                    res.json().then((result) => {
-                        const arrf = result.map((item) => {
-                            return item.title;
-                        })
-                        console.log(arrf);
-                        setList([...list, ...arrf]);
-                    })
-
-                } else {
-                    setStatus('failed')
-                    res.json().then((result) => {
-                        setMessage(result.message)
-                    })
-                }
-            })
+        getNextSetOfData();
 
     }, [])
 
@@ -81,10 +50,6 @@ const Renderlist = (props) => {
             <hi>RenderList</hi>
 
             <table >
-
-
-
-
                 <tbody>
                     {
                         list.map((item, idx) => {
